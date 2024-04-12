@@ -1,10 +1,17 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { authorsReducer, genresReducer } from './reducers/bookRedcuer';
+import {
+  authorsReducer,
+  genresReducer,
+  allAuthorBooksReducer,
+  allGenreBooksReducer,
+} from './reducers/bookRedcuer';
 
 const store = configureStore({
   reducer: {
     authorsList: authorsReducer,
     genresList: genresReducer,
+    allAuthorBooksList: allAuthorBooksReducer,
+    allGenreBooksList: allGenreBooksReducer,
   },
 });
 

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import Section from '../components/Section';
@@ -9,6 +10,7 @@ import ScrollAnimationWrapper from '../utils/ScrollAnimationWrapper';
 import PopupAnimationWrapper from '../utils/PopupAnimationWrapper';
 
 const FilterByGenre = () => {
+  const navigate = useNavigate();
   const scrollAnimation = useMemo(() => getScrollAnimation(), []);
   const dispatch = useDispatch();
   const { loading, genresArray, error } = useSelector(
@@ -19,7 +21,13 @@ const FilterByGenre = () => {
     if (genresArray.length === 0) {
       dispatch(fetchByGenre());
     }
-  }, [genresArray]);
+  }, [genresArray, dispatch]);
+
+  const handleNavigationClick = (genre) => {
+    const updatedGenre = genre.split(' ').join('-');
+    navigate(`/genres/${updatedGenre}`);
+  };
+
   return (
     <Section classname='flex flex-col items-start tracking-widest'>
       <ScrollAnimationWrapper className='container max-w-5xl mx-auto text-center mt-4 md:mt-16'>
@@ -44,7 +52,10 @@ const FilterByGenre = () => {
         {genresArray.length > 0 &&
           genresArray.map((genre, index) => (
             <PopupAnimationWrapper key={index} delay={index / 10}>
-              <button className='group p-8 cursor-pointer relative text-xl font-normal border-0 flex items-center justify-center bg-transparent text-white h-auto w-[170px] overflow-hidden transition-all duration-100'>
+              <button
+                onClick={() => handleNavigationClick(genre)}
+                className='group p-8 cursor-pointer relative text-xl font-normal border-0 flex items-center justify-center bg-transparent text-white h-auto w-[170px] overflow-hidden transition-all duration-100'
+              >
                 <span className='group-hover:w-full absolute left-0 h-full w-5 border-y border-l border-sky-500 transition-all duration-500'></span>
 
                 <p className='group-hover:opacity-0 group-hover:translate-x-[-100%] absolute translate-x-0 transition-all duration-200'>

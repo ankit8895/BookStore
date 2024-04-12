@@ -5,6 +5,8 @@ import { AnimatePresence } from 'framer-motion';
 import FilterGenreAndAuthor from './pages/FilterGenreAndAuthor';
 import FilterByAuthor from './pages/FilterByAuthor';
 import FilterByGenre from './pages/FilterByGenre';
+import BooksByAuthor from './pages/BooksByAuthor';
+import BooksByGenre from './pages/BooksByGenre';
 
 const App = () => {
   const element = useRoutes([
@@ -19,6 +21,14 @@ const App = () => {
     {
       path: '/genres',
       element: <FilterByGenre />,
+    },
+    {
+      path: '/authors/:name/:id',
+      element: <BooksByAuthor />,
+    },
+    {
+      path: '/genres/:name',
+      element: <BooksByGenre />,
     },
   ]);
 

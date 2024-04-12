@@ -33,17 +33,18 @@ const authorsSlice = createSlice({
     });
     builder.addCase(fetchByAuthor.fulfilled, (state, action) => {
       const uniqueAuthors = new Set();
+      const uniqueAuthorsArray = [];
 
       action.payload.forEach((book) => {
         const authors = book.volumeInfo.authors;
         authors.forEach((author) => {
           if (!uniqueAuthors.has(author)) {
             uniqueAuthors.add(author);
+            uniqueAuthorsArray.push({ name: author, id: book.id });
           }
         });
       });
 
-      const uniqueAuthorsArray = Array.from(uniqueAuthors);
       state.loading = false;
       state.authorsName = uniqueAuthorsArray;
     });
@@ -90,7 +91,6 @@ const genreSlice = createSlice({
       action.payload.forEach((book) => {
         if (book.volumeInfo.categories !== undefined) {
           const genres = book.volumeInfo.categories;
-          console.log(typeof genres);
           genres.forEach((genre) => {
             if (!uniqueGenre.has(genre)) {
               uniqueGenre.add(genre);
@@ -110,7 +110,145 @@ const genreSlice = createSlice({
   },
 });
 
+const fethAllBooksByAuthor = createAsyncThunk(
+  'fethAllBooksByAuthor',
+  async (authorName, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await axios.get(
+        'https://d1krvzwx5oquy1.cloudfront.net/books.json'
+      );
+
+      return fulfillWithValue({ data, authorName });
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        throw rejectWithValue(error.response.data.message);
+      } else {
+        throw rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
+const authorsBookSlice = createSlice({
+  name: 'authorsBook',
+  initialState: {
+    loading: false,
+    books: [],
+    error: '',
+  },
+  reducers: {
+    resetAuthorsBook: (state, action) => {
+      state.loading = false;
+      (state.books = []), (state.error = '');
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fethAllBooksByAuthor.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(fethAllBooksByAuthor.fulfilled, (state, action) => {
+      const { data, authorName } = action.payload;
+      const allAuthorBooks = [];
+
+      data.forEach((book) => {
+        const authors = book.volumeInfo.authors;
+        authors.forEach((author) => {
+          if (authorName === author) {
+            allAuthorBooks.push(book);
+          }
+        });
+      });
+
+      state.loading = false;
+      state.books = allAuthorBooks;
+    });
+    builder.addCase(fethAllBooksByAuthor.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload ? action.payload : action.error.message;
+    });
+  },
+});
+
+const fetchAllBooksByGenre = createAsyncThunk(
+  'fethAllBooksByAuthor',
+  async (genre, { rejectWithValue, fulfillWithValue }) => {
+    try {
+      const { data } = await axios.get(
+        'https://d1krvzwx5oquy1.cloudfront.net/books.json'
+      );
+
+      return fulfillWithValue({ data, genre });
+    } catch (error) {
+      if (error.response && error.response.data.message) {
+        throw rejectWithValue(error.response.data.message);
+      } else {
+        throw rejectWithValue(error.message);
+      }
+    }
+  }
+);
+
+const genreBooksSlice = createSlice({
+  name: 'genre',
+  initialState: {
+    loading: false,
+    books: [],
+    error: '',
+  },
+  reducers: {
+    resetGenreBooks: (state, action) => {
+      state.loading = false;
+      state.books = [];
+      state.error = '';
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchAllBooksByGenre.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(fetchAllBooksByGenre.fulfilled, (state, action) => {
+      const { data, genre } = action.payload;
+      const uniqueGenreArray = [];
+
+      data.forEach((book) => {
+        if (book.volumeInfo.categories !== undefined) {
+          const genres = book.volumeInfo.categories;
+          genres.forEach((gen) => {
+            if (genre === gen) {
+              uniqueGenreArray.push(book);
+            }
+          });
+        }
+      });
+      state.loading = false;
+      state.books = uniqueGenreArray;
+    });
+    builder.addCase(fetchAllBooksByGenre.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload ? action.payload : action.error.message;
+    });
+  },
+});
+
 const authorsReducer = authorsSlice.reducer;
+
 const genresReducer = genreSlice.reducer;
 
-export { authorsReducer, fetchByAuthor, genresReducer, fetchByGenre };
+const allAuthorBooksReducer = authorsBookSlice.reducer;
+const allAuthorBooksAction = authorsBookSlice.actions;
+
+const allGenreBooksReducer = genreBooksSlice.reducer;
+const allGenreBooksAction = genreBooksSlice.actions;
+
+export {
+  authorsReducer,
+  fetchByAuthor,
+  genresReducer,
+  fetchByGenre,
+  allAuthorBooksReducer,
+  allAuthorBooksAction,
+  fethAllBooksByAuthor,
+  allGenreBooksReducer,
+  allGenreBooksAction,
+  fetchAllBooksByGenre,
+};
