@@ -7,6 +7,47 @@
   background-color: black;
 }
 
+::-webkit-scrollbar {
+  display: none;
+  width: 10px;
+  background-color: black;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to right, #a855f7, #ec4899);
+  border-radius: 10px;
+}
+
+::-moz-scrollbar {
+  width: 10px;
+  background-color: black;
+}
+
+::-moz-scrollbar-thumb {
+  background: linear-gradient(to right, #a855f7, #ec4899);
+  border-radius: 10px;
+}
+
+::-ms-scrollbar {
+  width: 10px;
+  background-color: black;
+}
+
+::-ms-scrollbar-thumb {
+  background: linear-gradient(to right, #a855f7, #ec4899);
+  border-radius: 10px;
+}
+
+::scrollbar {
+  width: 10px;
+  background-color: black;
+}
+
+::scrollbar-thumb {
+  background: linear-gradient(to right, #a855f7, #ec4899);
+  border-radius: 10px;
+}
+
 body {
   cursor: cell;
 }

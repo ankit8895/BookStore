@@ -29,29 +29,23 @@ const FilterByGenre = () => {
   };
 
   return (
-    <Section classname='flex flex-col items-start tracking-widest'>
-      <ScrollAnimationWrapper className='container max-w-5xl mx-auto text-center mt-4 md:mt-16'>
-        <motion.h1
-          variants={scrollAnimation}
-          className='text-4xl font-bold text-gray-900 leading-tight mb-2 pb-4 relative'
-        >
+    <Section classname='flex flex-col items-start tracking-widest' link={'/'}>
+      <PopupAnimationWrapper className='container max-w-5xl mx-auto text-center mt-4 md:mt-16'>
+        <motion.h1 className='text-4xl font-bold text-gray-900 leading-tight mb-2 pb-4 relative'>
           <span className='bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-pink-500'>
             The Turning Page
           </span>
           <span className='absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500'></span>
         </motion.h1>
-        <motion.p
-          variants={scrollAnimation}
-          className='text-lg text-white mb-8'
-        >
+        <motion.p className='text-lg text-white mb-8'>
           Select books by the genre from store
         </motion.p>
-      </ScrollAnimationWrapper>
+      </PopupAnimationWrapper>
 
       <div className='flex flex-row flex-wrap justify-center items-center max-w-7xl mx-auto gap-6 py-6 md:px-1 lg:px-2 md:mt-16 lg:mt-0'>
         {genresArray.length > 0 &&
           genresArray.map((genre, index) => (
-            <PopupAnimationWrapper key={index} delay={index / 10}>
+            <PopupAnimationWrapper key={index} delay={0.1}>
               <button
                 onClick={() => handleNavigationClick(genre)}
                 className='group p-8 cursor-pointer relative text-xl font-normal border-0 flex items-center justify-center bg-transparent text-white h-auto w-[170px] overflow-hidden transition-all duration-100'
