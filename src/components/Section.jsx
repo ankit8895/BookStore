@@ -1,4 +1,5 @@
 import React from 'react';
+import PrivacyScreenAnimation from '../utils/PrivacyScreenAnimation';
 
 const Section = ({ children, classname }) => {
   return (
@@ -8,6 +9,7 @@ const Section = ({ children, classname }) => {
       }`}
     >
       {children}
+      <PrivacyScreenAnimation classname='privacy-screen' />
     </div>
   );
 };

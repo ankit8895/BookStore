@@ -6,3 +6,17 @@
 :root {
   background-color: black;
 }
+
+body {
+  cursor: cell;
+}
+
+.privacy-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to right, #a855f7, #ec4899);
+  z-index: 20;
+}
